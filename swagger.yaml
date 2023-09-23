@@ -1,0 +1,53 @@
+swagger: '2.0'
+info:
+  title: MoviePy Audio-Video Combiner Microservice
+  description: API to combine audio and video files using MoviePy
+  version: "1.0.0"
+host: "localhost:8080"
+basePath: "/"
+schemes:
+- "http"
+paths:
+  /combine_audio_video:
+    post:
+      summary: "Combine audio and video files"
+      description: "Uploads an audio and a video file, combines them using MoviePy, and returns the combined video file."
+      consumes:
+      - "application/json"
+      produces:
+      - "video/mp4"
+      parameters:
+      - in: "header"
+        name: "API-Key"
+        description: "API key for authorization"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "JSON object containing URLs of audio and video files to be combined."
+        required: true
+        schema:
+          type: "object"
+          properties:
+            audio_url:
+              type: "string"
+              description: "URL of the audio file."
+            video_url:
+              type: "string"
+              description: "URL of the video file."
+          example:
+            audio_url: "http://example.com/audio.mp3"
+            video_url: "http://example.com/video.mp4"
+      responses:
+        200:
+          description: "Audio and video files combined successfully."
+          schema:
+            type: "file"
+        400:
+          description: "Bad Request. Invalid input."
+        401:
+          description: "Unauthorized. Invalid API Key."
+        415:
+          description: "Unsupported Media Type. Content type must be 'application/json'."
+        500:
+          description: "Internal Server Error. An error occurred while processing the files.
